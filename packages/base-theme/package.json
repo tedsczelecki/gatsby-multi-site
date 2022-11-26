@@ -2,10 +2,14 @@
   "name": "@dealers/base-theme",
   "version": "0.2.3",
   "main": "index.js",
-  "author": "christopherbiscardi <chris@christopherbiscardi.com> (@chrisbiscardi)",
+  "author": "tedsczelecki <ted@rebelpixel.ca>",
   "license": "LicenseRef-LICENSE",
+  "repository": "git@github.com:tedsczelecki/gatsby-multi-site.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "peerDependencies": {
     "gatsby": "^5.0.0"
   },
-  "gitHead": "04a33145cd249e06e195554b9fb90f2d899aecce"
+  "gitHead": "5a952f2b232977918e0d6326ff31d901829ae634"
 }
