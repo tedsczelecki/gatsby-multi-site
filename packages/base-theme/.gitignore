@@ -1,3 +1,4 @@
 .cache
+.npmrc
 public
 node_modules
