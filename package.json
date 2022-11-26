@@ -4,8 +4,12 @@
   "main": "index.js",
   "private": true,
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/tedsczelecki/gatsby-multi-site.git"
+  },
   "publishConfig": {
-    "@tedsczelecki:registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "lerna": "^6.0.3",
