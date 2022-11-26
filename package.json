@@ -4,10 +4,7 @@
   "main": "index.js",
   "private": true,
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "ssh://git@github.com/tedsczelecki/gatsby-multi-site.git"
-  },
+  "repository": "git@github.com:tedsczelecki/gatsby-multi-site.git",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
