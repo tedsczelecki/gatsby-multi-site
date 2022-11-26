@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "main": "index.js",
   "author": "christopherbiscardi <chris@christopherbiscardi.com> (@chrisbiscardi)",
-  "license": "MIT",
+  "license": "LicenseRef-LICENSE",
   "peerDependencies": {
     "gatsby": "^5.0.0"
-  }
+  },
+  "gitHead": "e793b47aea11243432ca20163aa559dc2e551d46"
 }

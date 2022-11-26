@@ -1,7 +1,7 @@
 {
   "name": "@tedsczelecki/dealerone.rebelpixel.ca",
   "version": "0.1.0",
-  "license": "MIT",
+  "private": true,
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
@@ -17,5 +17,6 @@
     "gatsby": "^5.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  }
+  },
+  "gitHead": "e793b47aea11243432ca20163aa559dc2e551d46"
 }
