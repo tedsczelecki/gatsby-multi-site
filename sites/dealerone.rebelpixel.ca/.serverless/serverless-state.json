@@ -1,0 +1,81 @@
+{
+  "service": {
+    "service": "dealerone-rebelpixel-ca",
+    "serviceObject": {
+      "name": "dealerone-rebelpixel-ca"
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs18.x",
+      "region": "us-east-1",
+      "stage": "dev",
+      "stackName": "dealerone-rebelpixel-ca",
+      "deploymentBucket": "serverless-gatsby-deployments",
+      "versionFunctions": true,
+      "deploymentBucketObject": {
+        "name": "serverless-gatsby-deployments"
+      },
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "HostingBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+              "AccessControl": "PublicRead",
+              "BucketName": "dealerone.rebelpixel.ca",
+              "WebsiteConfiguration": {
+                "ErrorDocument": "index.html",
+                "IndexDocument": "index.html"
+              }
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-gatsby-deployments",
+            "Export": {
+              "Name": "sls-dealerone-rebelpixel-ca-dev-ServerlessDeploymentBucketName"
+            }
+          }
+        }
+      }
+    },
+    "pluginsData": {},
+    "functions": {},
+    "resources": {
+      "Resources": {
+        "HostingBucket": {
+          "Type": "AWS::S3::Bucket",
+          "Properties": {
+            "AccessControl": "PublicRead",
+            "BucketName": "dealerone.rebelpixel.ca",
+            "WebsiteConfiguration": {
+              "ErrorDocument": "index.html",
+              "IndexDocument": "index.html"
+            }
+          }
+        }
+      },
+      "Outputs": {}
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless.yml",
+    "initialServerlessConfig": {
+      "service": "dealerone-rebelpixel-ca",
+      "frameworkVersion": "3",
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
+      }
+    },
+    "layers": {},
+    "isDashboardMonitoringPreconfigured": false
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/dealerone-rebelpixel-ca/dev/1669491092756-2022-11-26T19:31:32.756Z",
+    "artifact": ""
+  }
+}

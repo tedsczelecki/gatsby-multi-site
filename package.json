@@ -1,0 +1,25 @@
+{
+  "name": "@tedsczelecki/root",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@tedsczelecki"
+  },
+  "devDependencies": {
+    "lerna": "^6.0.3",
+    "prettier": "^2.8.0"
+  },
+  "workspaces": [
+    "packages/*",
+    "sites/*"
+  ],
+  "dependencies": {
+    "@chakra-ui/gatsby-plugin": "^3.0.6",
+    "@chakra-ui/react": "^2.4.1",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "framer-motion": "^7.6.12"
+  }
+}
