@@ -5,7 +5,7 @@
   "private": true,
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@tedsczelecki"
+    "@tedsczelecki:registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "lerna": "^6.0.3",
