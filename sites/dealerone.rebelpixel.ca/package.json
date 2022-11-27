@@ -12,9 +12,9 @@
     "@chakra-ui/react": "^2.4.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@tedsczelecki/base-theme": "^1.0.0",
+    "@tedsczelecki/base-theme": "^0.2.0",
     "framer-motion": "^7.6.12",
-    "gatsby": "^5.1.0",
+    "gatsby": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

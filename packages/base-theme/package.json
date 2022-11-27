@@ -9,7 +9,7 @@
     "@tedsczelecki:registry": "https://npm.pkg.github.com/tedsczelecki"
   },
   "peerDependencies": {
-    "gatsby": "^5.0.0"
+    "gatsby": "^4.0.0"
   },
   "gitHead": "b21e01936faa331637a229cdec91cdee48255371"
 }
