@@ -1,5 +1,5 @@
 {
-  "name": "@dealers/base-theme",
+  "name": "@tedsczelecki/base-theme",
   "version": "0.2.9",
   "main": "index.js",
   "author": "tedsczelecki <ted@rebelpixel.ca>",
@@ -11,5 +11,5 @@
   "peerDependencies": {
     "gatsby": "^5.0.0"
   },
-  "gitHead": "bbb9873c46a56c98829e93c717a208700c494efe"
+  "gitHead": "b21e01936faa331637a229cdec91cdee48255371"
 }
