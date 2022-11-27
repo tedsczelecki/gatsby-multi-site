@@ -6,10 +6,10 @@
   "license": "LicenseRef-LICENSE",
   "repository": "git@github.com:tedsczelecki/gatsby-multi-site.git",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "@tedsczelecki:registry": "https://npm.pkg.github.com/tedsczelecki"
   },
   "peerDependencies": {
     "gatsby": "^5.0.0"
   },
-  "gitHead": "7de5322e497a29d17302dd841fd7528a418c7046"
+  "gitHead": "bbb9873c46a56c98829e93c717a208700c494efe"
 }
