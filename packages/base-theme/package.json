@@ -11,5 +11,8 @@
   "peerDependencies": {
     "gatsby": "^4.0.0"
   },
+  "scripts": {
+    "build": "rm -rf build && tsc --build"
+  },
   "gitHead": "b21e01936faa331637a229cdec91cdee48255371"
 }
