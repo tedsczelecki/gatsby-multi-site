@@ -1,6 +1,6 @@
 {
   "name": "@tedsczelecki/dealerone.rebelpixel.ca",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "private": true,
   "scripts": {
     "build": "gatsby build",
@@ -12,7 +12,7 @@
     "@chakra-ui/react": "^2.4.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@tedsczelecki/base-theme": "^0.2.11",
+    "@tedsczelecki/base-theme": "^0.2.12",
     "framer-motion": "^7.6.12",
     "gatsby": "^4.0.0",
     "react": "^18.2.0",
