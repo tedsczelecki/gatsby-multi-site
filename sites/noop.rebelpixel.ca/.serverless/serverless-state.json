@@ -1,0 +1,81 @@
+{
+  "service": {
+    "service": "noop-rebelpixel-ca",
+    "serviceObject": {
+      "name": "noop-rebelpixel-ca"
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs18.x",
+      "region": "us-east-1",
+      "stage": "dev",
+      "stackName": "noop-rebelpixel-ca",
+      "deploymentBucket": "serverless-gatsby-deployments",
+      "versionFunctions": true,
+      "deploymentBucketObject": {
+        "name": "serverless-gatsby-deployments"
+      },
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "HostingBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+              "AccessControl": "PublicRead",
+              "BucketName": "noop.rebelpixel.ca",
+              "WebsiteConfiguration": {
+                "ErrorDocument": "index.html",
+                "IndexDocument": "index.html"
+              }
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-gatsby-deployments",
+            "Export": {
+              "Name": "sls-noop-rebelpixel-ca-dev-ServerlessDeploymentBucketName"
+            }
+          }
+        }
+      }
+    },
+    "pluginsData": {},
+    "functions": {},
+    "resources": {
+      "Resources": {
+        "HostingBucket": {
+          "Type": "AWS::S3::Bucket",
+          "Properties": {
+            "AccessControl": "PublicRead",
+            "BucketName": "noop.rebelpixel.ca",
+            "WebsiteConfiguration": {
+              "ErrorDocument": "index.html",
+              "IndexDocument": "index.html"
+            }
+          }
+        }
+      },
+      "Outputs": {}
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless.yml",
+    "initialServerlessConfig": {
+      "service": "noop-rebelpixel-ca",
+      "frameworkVersion": "3",
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
+      }
+    },
+    "layers": {},
+    "isDashboardMonitoringPreconfigured": false
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/noop-rebelpixel-ca/dev/1669605626072-2022-11-28T03:20:26.072Z",
+    "artifact": ""
+  }
+}

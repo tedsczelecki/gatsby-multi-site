@@ -1,9 +1,11 @@
 FROM node:18-alpine AS build
 
 ARG FORCE_NO_CACHE_FLAG=1
+ARG GITHUB_TOKEN
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 
+ENV GH_PACKAGE_TOKEN=${GH_PACKAGE_TOKEN}
 ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
 ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
@@ -15,7 +17,9 @@ RUN rm -rf node_modules
 RUN rm -rf .cache
 RUN rm -rf .serverless
 #COPY yarn.lock /app/yarn.lock
-COPY .npmrc /root/.npmrc
+
+RUN printf '@tedsczelecki:registry=https://npm.pkg.github.com/tedsczelecki \n\
+            //npm.pkg.github.com/:_authToken=${GH_PACKAGE_TOKEN}' >> .npmrc
 
 #RUN npm install -g npm-cli-login
 RUN npm install -g gatsby-cli

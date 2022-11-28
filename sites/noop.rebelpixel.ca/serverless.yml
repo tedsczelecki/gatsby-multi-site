@@ -1,0 +1,23 @@
+service: noop-rebelpixel-ca
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  stage: ${opt:stage, 'prod'}
+  stackName: noop-rebelpixel-ca
+  deploymentBucket:
+    name: serverless-gatsby-deployments
+
+resources:
+  Resources:
+    HostingBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: noop.rebelpixel.ca
+        WebsiteConfiguration:
+          ErrorDocument: index.html
+          IndexDocument: index.html
