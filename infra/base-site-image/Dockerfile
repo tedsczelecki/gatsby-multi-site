@@ -18,14 +18,11 @@ RUN rm -rf .cache
 RUN rm -rf .serverless
 #COPY yarn.lock /app/yarn.lock
 
-RUN printf '@tedsczelecki:registry=https://npm.pkg.github.com/tedsczelecki \n\
-            //npm.pkg.github.com/:_authToken=${GH_PACKAGE_TOKEN}' >> .npmrc
+RUN echo "@tedsczelecki:registry=https://npm.pkg.github.com/tedsczelecki" >> .npmrc
+RUN echo "//npm.pkg.github.com/:_authToken=${GH_PACKAGE_TOKEN}" >> .npmrc
 
 #RUN npm install -g npm-cli-login
 RUN npm install -g gatsby-cli
-
-
-
 
 #RUN npm-cli-adduser -u 'tedsczelecki' -p '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' -e 'tedsczelecki@gmail.com' -r 'https://npm.pkg.github.com/tedsczelecki' -s '@tedsczelecki'
 RUN #npm config set registry @tedsczelecki:registry=https://npm.pkg.github.com/tedsczelecki
