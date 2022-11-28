@@ -13,8 +13,11 @@ ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
 WORKDIR /app/sites/${SITE}
 
-RUN echo "@tedsczelecki:registry=https://npm.pkg.github.com/tedsczelecki" >> /root/.npmrc
-RUN echo "//npm.pkg.github.com/:_authToken=${GH_PACKAGE_TOKEN}" >> /root/.npmrc
+RUN echo "@tedsczelecki:registry=https://npm.pkg.github.com/tedsczelecki" >> .npmrc
+RUN echo "//npm.pkg.github.com/:_authToken=${GH_PACKAGE_TOKEN}" >> .npmrc
+
+RUN ls -la
+RUN cat .npmrc
 
 RUN npm install
 RUN npm run build
