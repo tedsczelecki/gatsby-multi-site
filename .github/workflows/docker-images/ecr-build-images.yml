@@ -1,8 +1,9 @@
+name: Build site docker images
+
 on:
   push:
-    branches: [ main ]
-
-name: Build site docker images
+    branches:
+      - main
 
 jobs:
   deploy:
