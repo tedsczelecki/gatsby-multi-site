@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build
+FROM 182680049095.dkr.ecr.us-east-1.amazonaws.com/base-site-image AS build
 
 ARG FORCE_NO_CACHE_FLAG=1
 ARG SITE
