@@ -15,6 +15,7 @@ WORKDIR /app/sites/${SITE}
 
 RUN echo "@tedsczelecki:registry=https://npm.pkg.github.com/tedsczelecki" >> .npmrc
 RUN echo "//npm.pkg.github.com/:_authToken=${GH_PACKAGE_TOKEN}" >> .npmrc
+RUN npm config set registry @tedsczelecki:registry=https://npm.pkg.github.com/tedsczelecki
 
 RUN npm install
 RUN npm run build
