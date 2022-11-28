@@ -16,6 +16,11 @@
     "packages/*",
     "sites/*"
   ],
+  "scripts": {
+    "build": "sh scripts/package-build.sh",
+    "publish:prepare": "yarn build && git add -A",
+    "publish": "lerna publish"
+  },
   "dependencies": {
     "@chakra-ui/gatsby-plugin": "^3.0.6",
     "@chakra-ui/react": "^2.4.1",
