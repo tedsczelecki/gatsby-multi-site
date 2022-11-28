@@ -1,4 +1,4 @@
-FROM 182680049095.dkr.ecr.us-east-1.amazonaws.com/base-site-image AS build
+FROM 182680049095.dkr.ecr.us-east-1.amazonaws.com/base-site-image:latest AS build
 
 ARG FORCE_NO_CACHE_FLAG=1
 ARG SITE
