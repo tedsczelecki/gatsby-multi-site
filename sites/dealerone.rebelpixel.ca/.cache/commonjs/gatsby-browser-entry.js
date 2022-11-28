@@ -5,8 +5,8 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 var _exportNames = {
   PageRenderer: true,
-  useScrollRestoration: true,
   Link: true,
+  useScrollRestoration: true,
   withPrefix: true,
   withAssetPrefix: true,
   navigate: true,
@@ -16,9 +16,9 @@ var _exportNames = {
   StaticQuery: true,
   StaticQueryContext: true,
   useStaticQuery: true,
-  Slice: true
+  StaticQueryServerContext: true
 };
-exports.StaticQueryContext = exports.StaticQuery = exports.Slice = exports.PageRenderer = exports.Link = void 0;
+exports.StaticQueryServerContext = exports.StaticQueryContext = exports.StaticQuery = exports.PageRenderer = exports.Link = void 0;
 exports.graphql = graphql;
 exports.withPrefix = exports.withAssetPrefix = exports.useStaticQuery = exports.useScrollRestoration = exports.prefetchPathname = exports.parsePath = exports.navigate = void 0;
 
@@ -32,9 +32,9 @@ var _gatsbyReactRouterScroll = require("gatsby-react-router-scroll");
 
 exports.useScrollRestoration = _gatsbyReactRouterScroll.useScrollRestoration;
 
-var _gatsbyLink = require("gatsby-link");
+var _gatsbyLink = _interopRequireWildcard(require("gatsby-link"));
 
-exports.Link = _gatsbyLink.Link;
+exports.Link = _gatsbyLink.default;
 exports.withPrefix = _gatsbyLink.withPrefix;
 exports.withAssetPrefix = _gatsbyLink.withAssetPrefix;
 exports.navigate = _gatsbyLink.navigate;
@@ -45,10 +45,7 @@ var _staticQuery = require("./static-query");
 exports.StaticQuery = _staticQuery.StaticQuery;
 exports.StaticQueryContext = _staticQuery.StaticQueryContext;
 exports.useStaticQuery = _staticQuery.useStaticQuery;
-
-var _slice = require("./slice");
-
-exports.Slice = _slice.Slice;
+exports.StaticQueryServerContext = _staticQuery.StaticQueryServerContext;
 
 var _gatsbyScript = require("gatsby-script");
 
@@ -58,6 +55,11 @@ Object.keys(_gatsbyScript).forEach(function (key) {
   if (key in exports && exports[key] === _gatsbyScript[key]) return;
   exports[key] = _gatsbyScript[key];
 });
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 const prefetchPathname = _loader.default.enqueue;
 exports.prefetchPathname = prefetchPathname;
 

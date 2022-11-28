@@ -12,7 +12,7 @@
     "gatsby": "^4.0.0"
   },
   "scripts": {
-    "build": "rm -rf build && tsc --build"
+    "build": "rm -rf build && tsc --build && cp gatsby-config.js build/gatsby-config.js"
   },
   "gitHead": "8f21c287035420652dfe38fa5c047f51760e678c"
 }

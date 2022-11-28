@@ -1,5 +1,0 @@
-
-    const cmd = require("/Users/tedsczelecki/Documents/projects/gatsby-multi-site/node_modules/gatsby/dist/commands/develop-process.js");
-    const args = {"_":["develop"],"verbose":false,"no-color":false,"no-colors":false,"noColors":false,"noColor":false,"json":false,"H":"localhost","host":"localhost","p":"8000","port":8000,"c":"","cert-file":"","certFile":"","k":"","key-file":"","keyFile":"","ca-file":"","caFile":"","graphql-tracing":false,"graphqlTracing":false,"$0":"gatsby","directory":"/Users/tedsczelecki/Documents/projects/gatsby-multi-site/sites/dealerone.rebelpixel.ca","browserslist":[">0.25%","not dead"],"sitePackageJson":{"name":"@dealers/dealerone.rebelpixel.ca","version":"1.0.0","license":"MIT","scripts":{"develop":"gatsby develop","build":"gatsby build"},"dependencies":{"@dealers/base-theme":"^1.0.0","@chakra-ui/gatsby-plugin":"^3.0.6","@chakra-ui/react":"^2.4.1","@emotion/react":"^11.10.5","@emotion/styled":"^11.10.5","framer-motion":"^7.6.12","gatsby":"^5.1.0","react":"^18.2.0","react-dom":"^18.2.0"}},"report":{"errorMap":{}},"useYarn":false,"proxyPort":8000,"debugInfo":null};
-    cmd(args);
-  

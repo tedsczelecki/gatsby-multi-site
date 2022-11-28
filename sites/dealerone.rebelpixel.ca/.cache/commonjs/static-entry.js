@@ -3,10 +3,9 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports.StaticQueryContext = exports.React = void 0;
+exports.StaticQueryServerContext = exports.StaticQueryContext = exports.React = void 0;
 exports.default = staticPage;
 exports.getPageChunk = getPageChunk;
-exports.renderSlice = renderSlice;
 exports.sanitizeComponents = exports.reorderHeadComponents = exports.renderToPipeableStream = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
@@ -15,6 +14,7 @@ var _writerNode = require("react-server-dom-webpack/writer.node.server");
 
 exports.renderToPipeableStream = _writerNode.renderToPipeableStream;
 
+/* global HAS_REACT_18 */
 const React = require(`react`);
 
 exports.React = React;
@@ -38,9 +38,11 @@ const {
 const merge = require(`deepmerge`);
 
 const {
-  StaticQueryContext
+  StaticQueryContext,
+  StaticQueryServerContext
 } = require(`gatsby`);
 
+exports.StaticQueryServerContext = StaticQueryServerContext;
 exports.StaticQueryContext = StaticQueryContext;
 
 const fs = require(`fs`);
@@ -68,20 +70,11 @@ const {
   grabMatchParams
 } = require(`./find-path`);
 
+const chunkMapping = require(`../public/chunk-map.json`);
+
 const {
   headHandlerForSSR
-} = require(`./head/head-export-handler-for-ssr`);
-
-const {
-  SlicesResultsContext,
-  SlicesContext,
-  SlicesMapContext,
-  SlicesPropsContext
-} = require(`./slice/context`);
-
-const {
-  ServerSliceRenderer
-} = require(`./slice/server-slice-renderer`); // we want to force posix-style joins, so Windows doesn't produce backslashes for urls
+} = require(`./head/head-export-handler-for-ssr`); // we want to force posix-style joins, so Windows doesn't produce backslashes for urls
 
 
 const {
@@ -172,11 +165,6 @@ const reorderHeadComponents = headComponents => {
 };
 
 exports.reorderHeadComponents = reorderHeadComponents;
-const DEFAULT_CONTEXT = {
-  // whether or not we're building the site now
-  // usage in determining original build or engines
-  isDuringBuild: false
-};
 
 async function staticPage({
   pagePath,
@@ -187,12 +175,9 @@ async function staticPage({
   reversedStyles,
   reversedScripts,
   inlinePageData = false,
-  context = {},
-  webpackCompilationHash,
-  sliceData
+  webpackCompilationHash
 }) {
-  const renderContext = Object.assign(DEFAULT_CONTEXT, context); // for this to work we need this function to be sync or at least ensure there is single execution of it at a time
-
+  // for this to work we need this function to be sync or at least ensure there is single execution of it at a time
   global.unsafeBuiltinUsage = [];
 
   try {
@@ -282,8 +267,7 @@ async function staticPage({
     };
 
     const {
-      componentChunkName,
-      slicesMap
+      componentChunkName
     } = pageData;
     const pageComponent = await asyncRequires.components[componentChunkName]();
     headHandlerForSSR({
@@ -329,8 +313,9 @@ async function staticPage({
     }, /*#__PURE__*/React.createElement(RouteHandler, {
       path: "/*"
     })), /*#__PURE__*/React.createElement("div", RouteAnnouncerProps));
-    const sliceProps = {};
-    let body = apiRunner(`wrapRootElement`, {
+    const bodyComponent = /*#__PURE__*/React.createElement(StaticQueryContext.Provider, {
+      value: staticQueryContext
+    }, apiRunner(`wrapRootElement`, {
       element: routerElement,
       pathname: pagePath
     }, routerElement, ({
@@ -340,51 +325,7 @@ async function staticPage({
         element: result,
         pathname: pagePath
       };
-    }).pop();
-    const slicesContext = {
-      // if we're in build now, we know we're on the server
-      // otherwise we're in an engine
-      renderEnvironment: renderContext.isDuringBuild ? `server` : `engines`
-    };
-
-    if (process.env.GATSBY_SLICES) {
-      // if we're running in an engine, we need to manually wrap body with
-      // the results context to pass the map of slice name to component/data/context
-      if (slicesContext.renderEnvironment === `engines`) {
-        // this is the same name used in the browser
-        // since this immitates behavior
-        const slicesDb = new Map();
-
-        for (const sliceName of Object.values(slicesMap)) {
-          const slice = sliceData[sliceName];
-          const {
-            default: SliceComponent
-          } = await getPageChunk(slice);
-          const sliceObject = {
-            component: SliceComponent,
-            sliceContext: slice.result.sliceContext,
-            data: slice.result.data
-          };
-          slicesDb.set(sliceName, sliceObject);
-        }
-
-        body = /*#__PURE__*/React.createElement(SlicesResultsContext.Provider, {
-          value: slicesDb
-        }, body);
-      }
-
-      body = /*#__PURE__*/React.createElement(SlicesContext.Provider, {
-        value: slicesContext
-      }, /*#__PURE__*/React.createElement(SlicesPropsContext.Provider, {
-        value: sliceProps
-      }, /*#__PURE__*/React.createElement(SlicesMapContext.Provider, {
-        value: slicesMap
-      }, body)));
-    }
-
-    const bodyComponent = /*#__PURE__*/React.createElement(StaticQueryContext.Provider, {
-      value: staticQueryContext
-    }, body); // Let the site or plugin render the page component.
+    }).pop()); // Let the site or plugin render the page component.
 
     await apiRunnerAsync(`replaceRenderer`, {
       bodyComponent,
@@ -401,20 +342,25 @@ async function staticPage({
 
     if (!bodyHtml) {
       try {
-        const writableStream = new WritableAsPromise();
-        const {
-          pipe
-        } = renderToPipeableStream(bodyComponent, {
-          onAllReady() {
-            pipe(writableStream);
-          },
+        // react 18 enabled
+        if (HAS_REACT_18) {
+          const writableStream = new WritableAsPromise();
+          const {
+            pipe
+          } = renderToPipeableStream(bodyComponent, {
+            onAllReady() {
+              pipe(writableStream);
+            },
 
-          onError(error) {
-            writableStream.destroy(error);
-          }
+            onError(error) {
+              writableStream.destroy(error);
+            }
 
-        });
-        bodyHtml = await writableStream;
+          });
+          bodyHtml = await writableStream;
+        } else {
+          bodyHtml = renderToString(bodyComponent);
+        }
       } catch (e) {
         // ignore @reach/router redirect errors
         if (!isRedirect(e)) throw e;
@@ -467,58 +413,47 @@ async function staticPage({
       }
     }); // Add page metadata for the current page
 
-    const windowPageData = `/*<![CDATA[*/window.pagePath="${pagePath}";${process.env.GATSBY_SLICES ? `` : `window.___webpackCompilationHash="${webpackCompilationHash}";`}${inlinePageData ? `window.pageData=${JSON.stringify(pageData)};` : ``}/*]]>*/`;
+    const windowPageData = `/*<![CDATA[*/window.pagePath="${pagePath}";window.___webpackCompilationHash="${webpackCompilationHash}";${inlinePageData ? `window.pageData=${JSON.stringify(pageData)};` : ``}/*]]>*/`;
     postBodyComponents.push( /*#__PURE__*/React.createElement("script", {
       key: `script-loader`,
       id: `gatsby-script-loader`,
       dangerouslySetInnerHTML: {
         __html: windowPageData
       }
+    })); // Add chunk mapping metadata
+
+    const scriptChunkMapping = `/*<![CDATA[*/window.___chunkMapping=${JSON.stringify(chunkMapping)};/*]]>*/`;
+    postBodyComponents.push( /*#__PURE__*/React.createElement("script", {
+      key: `chunk-mapping`,
+      id: `gatsby-chunk-mapping`,
+      dangerouslySetInnerHTML: {
+        __html: scriptChunkMapping
+      }
     }));
+    let bodyScripts = [];
 
-    if (process.env.GATSBY_SLICES) {
-      postBodyComponents.push(createElement(ServerSliceRenderer, {
-        sliceId: `_gatsby-scripts`
-      }));
-    } else {
-      const chunkMapping = require(`../public/chunk-map.json`); // restore the old behavior
-      // Add chunk mapping metadata
-
-
-      const scriptChunkMapping = `/*<![CDATA[*/window.___chunkMapping=${JSON.stringify(chunkMapping)};/*]]>*/`;
-      postBodyComponents.push( /*#__PURE__*/React.createElement("script", {
-        key: `chunk-mapping`,
-        id: `gatsby-chunk-mapping`,
-        dangerouslySetInnerHTML: {
-          __html: scriptChunkMapping
-        }
-      }));
-      let bodyScripts = [];
-
-      if (chunkMapping[`polyfill`]) {
-        chunkMapping[`polyfill`].forEach(script => {
-          const scriptPath = `${__PATH_PREFIX__}${script}`;
-          bodyScripts.push( /*#__PURE__*/React.createElement("script", {
-            key: scriptPath,
-            src: scriptPath,
-            noModule: true
-          }));
-        });
-      } // Filter out prefetched bundles as adding them as a script tag
-      // would force high priority fetching.
-
-
-      bodyScripts = bodyScripts.concat(scripts.filter(s => s.rel !== `prefetch`).map(s => {
-        const scriptPath = `${__PATH_PREFIX__}/${JSON.stringify(s.name).slice(1, -1)}`;
-        return /*#__PURE__*/React.createElement("script", {
+    if (chunkMapping[`polyfill`]) {
+      chunkMapping[`polyfill`].forEach(script => {
+        const scriptPath = `${__PATH_PREFIX__}${script}`;
+        bodyScripts.push( /*#__PURE__*/React.createElement("script", {
           key: scriptPath,
           src: scriptPath,
-          async: true
-        });
-      }));
-      postBodyComponents.push(...bodyScripts);
-    }
+          noModule: true
+        }));
+      });
+    } // Filter out prefetched bundles as adding them as a script tag
+    // would force high priority fetching.
 
+
+    bodyScripts = bodyScripts.concat(scripts.filter(s => s.rel !== `prefetch`).map(s => {
+      const scriptPath = `${__PATH_PREFIX__}/${JSON.stringify(s.name).slice(1, -1)}`;
+      return /*#__PURE__*/React.createElement("script", {
+        key: scriptPath,
+        src: scriptPath,
+        async: true
+      });
+    }));
+    postBodyComponents.push(...bodyScripts);
     headComponents = reorderHeadComponents(headComponents);
     apiRunner(`onPreRenderHTML`, {
       getHeadComponents,
@@ -530,7 +465,7 @@ async function staticPage({
       pathname: pagePath,
       pathPrefix: __PATH_PREFIX__
     });
-    let htmlElement = /*#__PURE__*/React.createElement(Html, (0, _extends2.default)({}, bodyProps, {
+    const html = `<!DOCTYPE html>${renderToStaticMarkup( /*#__PURE__*/React.createElement(Html, (0, _extends2.default)({}, bodyProps, {
       headComponents: headComponents,
       htmlAttributes: htmlAttributes,
       bodyAttributes: bodyAttributes,
@@ -538,19 +473,10 @@ async function staticPage({
       postBodyComponents: postBodyComponents,
       body: bodyHtml,
       path: pagePath
-    }));
-
-    if (process.env.GATSBY_SLICES) {
-      htmlElement = /*#__PURE__*/React.createElement(SlicesContext.Provider, {
-        value: slicesContext
-      }, htmlElement);
-    }
-
-    const html = `<!DOCTYPE html>${renderToStaticMarkup(htmlElement)}`;
+    })))}`;
     return {
       html,
-      unsafeBuiltinsUsage: global.unsafeBuiltinUsage,
-      sliceData: sliceProps
+      unsafeBuiltinsUsage: global.unsafeBuiltinUsage
     };
   } catch (e) {
     e.unsafeBuiltinsUsage = global.unsafeBuiltinUsage;
@@ -562,52 +488,4 @@ function getPageChunk({
   componentChunkName
 }) {
   return asyncRequires.components[componentChunkName]();
-}
-
-async function renderSlice({
-  slice,
-  staticQueryContext,
-  props = {}
-}) {
-  const {
-    default: SliceComponent
-  } = await getPageChunk(slice);
-  const slicesContext = {
-    // we are not yet supporting using <Slice /> placeholders within slice components
-    // setting this renderEnvironemnt to throw meaningful error on `<Slice />` usage
-    // `slices` renderEnvironment should be removed once we support nested `<Slice />` placeholders
-    renderEnvironment: `slices`,
-    sliceRoot: slice
-  };
-  const sliceElement = /*#__PURE__*/React.createElement(SliceComponent, (0, _extends2.default)({
-    sliceContext: slice.context
-  }, props));
-  const sliceWrappedWithWrapRootElement = apiRunner(`wrapRootElement`, {
-    element: sliceElement
-  }, sliceElement, ({
-    result
-  }) => {
-    return {
-      element: result
-    };
-  }).pop();
-  const sliceWrappedWithWrapRootElementAndContexts = /*#__PURE__*/React.createElement(SlicesContext.Provider, {
-    value: slicesContext
-  }, /*#__PURE__*/React.createElement(StaticQueryContext.Provider, {
-    value: staticQueryContext
-  }, sliceWrappedWithWrapRootElement));
-  const writableStream = new WritableAsPromise();
-  const {
-    pipe
-  } = renderToPipeableStream(sliceWrappedWithWrapRootElementAndContexts, {
-    onAllReady() {
-      pipe(writableStream);
-    },
-
-    onError(error) {
-      writableStream.destroy(error);
-    }
-
-  });
-  return await writableStream;
 }

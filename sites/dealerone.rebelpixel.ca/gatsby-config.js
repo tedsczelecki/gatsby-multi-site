@@ -1,6 +1,6 @@
 module.exports = {
   plugins: [
-    { resolve: `@dealers/base-theme`, options: {} },
+    { resolve: `@tedsczelecki/base-theme`, options: {} },
 
   ],
 }

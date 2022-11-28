@@ -13,8 +13,6 @@ var _reachRouter = require("@gatsbyjs/reach-router");
 
 var _gatsbyReactRouterScroll = require("gatsby-react-router-scroll");
 
-var _context = require("./slice/context");
-
 var _navigation = require("./navigation");
 
 var _apiRunnerBrowser = require("./api-runner-browser");
@@ -47,18 +45,11 @@ class LocationHandler extends _react.default.Component {
     const {
       location
     } = this.props;
-    const slicesContext = {
-      renderEnvironment: `browser`
-    };
 
     if (!_loader.default.isPageNotFound(location.pathname + location.search)) {
       return /*#__PURE__*/_react.default.createElement(_ensureResources.default, {
         location: location
-      }, locationAndPageResources => /*#__PURE__*/_react.default.createElement(_context.SlicesContext.Provider, {
-        value: slicesContext
-      }, /*#__PURE__*/_react.default.createElement(_context.SlicesMapContext.Provider, {
-        value: locationAndPageResources.pageResources.page.slicesMap
-      }, /*#__PURE__*/_react.default.createElement(_navigation.RouteUpdates, {
+      }, locationAndPageResources => /*#__PURE__*/_react.default.createElement(_navigation.RouteUpdates, {
         location: location
       }, /*#__PURE__*/_react.default.createElement(_gatsbyReactRouterScroll.ScrollContext, {
         location: location,
@@ -69,7 +60,7 @@ class LocationHandler extends _react.default.Component {
         id: "gatsby-focus-wrapper"
       }, /*#__PURE__*/_react.default.createElement(RouteHandler, (0, _extends2.default)({
         path: encodeURI((locationAndPageResources.pageResources.page.matchPath || locationAndPageResources.pageResources.page.path).split(`?`)[0])
-      }, this.props, locationAndPageResources))))))));
+      }, this.props, locationAndPageResources))))));
     }
 
     const dev404PageResources = _loader.default.loadPageSync(`/dev-404-page`);
@@ -84,13 +75,7 @@ class LocationHandler extends _react.default.Component {
       }));
     }
 
-    return /*#__PURE__*/_react.default.createElement(_ensureResources.default, {
-      location: location
-    }, locationAndPageResources => /*#__PURE__*/_react.default.createElement(_context.SlicesContext.Provider, {
-      value: slicesContext
-    }, /*#__PURE__*/_react.default.createElement(_context.SlicesMapContext.Provider, {
-      value: locationAndPageResources.pageResources.page.slicesMap
-    }, /*#__PURE__*/_react.default.createElement(_navigation.RouteUpdates, {
+    return /*#__PURE__*/_react.default.createElement(_navigation.RouteUpdates, {
       location: location
     }, /*#__PURE__*/_react.default.createElement(_reachRouter.Router, {
       basepath: __BASE_PATH__,
@@ -101,7 +86,7 @@ class LocationHandler extends _react.default.Component {
       location: location,
       pageResources: dev404PageResources,
       custom404: custom404
-    }))))));
+    })));
   }
 
 }
@@ -121,7 +106,7 @@ const rootWrappedWithWrapRootElement = (0, _apiRunnerBrowser.apiRunner)(`wrapRoo
 }).pop();
 
 function RootWrappedWithOverlayAndProvider() {
-  return /*#__PURE__*/_react.default.createElement(_fastRefreshOverlay.default, null, /*#__PURE__*/_react.default.createElement(_queryResultStore.SliceDataStore, null, /*#__PURE__*/_react.default.createElement(_queryResultStore.StaticQueryStore, null, rootWrappedWithWrapRootElement)));
+  return /*#__PURE__*/_react.default.createElement(_fastRefreshOverlay.default, null, /*#__PURE__*/_react.default.createElement(_queryResultStore.StaticQueryStore, null, rootWrappedWithWrapRootElement));
 }
 
 var _default = RootWrappedWithOverlayAndProvider;

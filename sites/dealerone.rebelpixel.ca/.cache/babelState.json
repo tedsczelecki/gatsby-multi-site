@@ -142,7 +142,7 @@
     }
   },
   "browserslist": [
-    ">0.25% and supports es6-module",
-    "not dead and supports es6-module"
+    ">0.25%",
+    "not dead"
   ]
 }
