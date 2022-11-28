@@ -14,6 +14,7 @@ RUN apk add --no-cache aws-cli make g++ py3-pip
 
 WORKDIR /app/sites/${SITE}
 
+RUN npm install
 RUN npm run build
 
 RUN aws s3 sync ./public s3://${BUCKET}/ \

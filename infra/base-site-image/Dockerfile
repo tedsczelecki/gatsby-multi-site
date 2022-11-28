@@ -33,7 +33,7 @@ RUN #npm config set registry @tedsczelecki:registry=https://npm.pkg.github.com/t
 
 #RUN yarn config set registry @tedsczelecki:registry=https://npm.pkg.github.com/tedsczelecki
 
-RUN npm install
+#RUN npm install
 #RUN npm run build
 #
 #RUN aws s3 sync ./public s3://${BUCKET}/ \
