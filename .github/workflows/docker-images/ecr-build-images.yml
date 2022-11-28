@@ -1,9 +1,6 @@
 name: Build site docker images
 
-on:
-  push:
-    branches:
-      - main
+on: push
 
 jobs:
   deploy:
@@ -20,9 +17,11 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ap-south-1
+
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
+
         - name: Build, Base site images
           id: build-image
           env:
